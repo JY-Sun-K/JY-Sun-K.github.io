@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on pEnguin</title>
+    <link>https://jy-sun-k.github.io/tags/</link>
+    <description>Recent content in Tags on pEnguin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 26 May 2021 16:10:24 +0800</lastBuildDate>
+    
+	<atom:link href="https://jy-sun-k.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GO</title>
+      <link>https://jy-sun-k.github.io/tags/go/</link>
+      <pubDate>Wed, 26 May 2021 16:10:24 +0800</pubDate>
+      
+      <guid>https://jy-sun-k.github.io/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>分布式</title>
+      <link>https://jy-sun-k.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/</link>
+      <pubDate>Wed, 26 May 2021 16:10:24 +0800</pubDate>
+      
+      <guid>https://jy-sun-k.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>并发</title>
+      <link>https://jy-sun-k.github.io/tags/%E5%B9%B6%E5%8F%91/</link>
+      <pubDate>Tue, 25 May 2021 23:48:02 +0800</pubDate>
+      
+      <guid>https://jy-sun-k.github.io/tags/%E5%B9%B6%E5%8F%91/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

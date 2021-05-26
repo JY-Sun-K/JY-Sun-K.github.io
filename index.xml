@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pEnguin</title>
+    <link>https://jy-sun-k.github.io/</link>
+    <description>Recent content on pEnguin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 26 May 2021 16:10:24 +0800</lastBuildDate>
+    
+	<atom:link href="https://jy-sun-k.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>分布式缓存二</title>
+      <link>https://jy-sun-k.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F2/</link>
+      <pubDate>Wed, 26 May 2021 16:10:24 +0800</pubDate>
+      
+      <guid>https://jy-sun-k.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F2/</guid>
+      <description>缓存失效、穿透和雪崩问题怎么处理？ 缓存失效 问题描述 缓存第一个经典问题是缓存失效。上一课时讲到，服务系统查数据，首先会查缓存，如果缓存数据不存在，就进一步查 DB，最后查到数据后回种到缓存并返回。缓存的性</description>
+    </item>
+    
+    <item>
+      <title>Go基础</title>
+      <link>https://jy-sun-k.github.io/posts/go%E5%9F%BA%E7%A1%80/</link>
+      <pubDate>Wed, 26 May 2021 00:07:28 +0800</pubDate>
+      
+      <guid>https://jy-sun-k.github.io/posts/go%E5%9F%BA%E7%A1%80/</guid>
+      <description>go基础 Go 是强类型（Strongly Typed）语言，因此不允许某一类型的变量赋值为其他类型的值。 Golang 是一种编译型语言。源代码会编译为二进制机器码。 使用 %T 格式说明符（Format Specifier），可</description>
+    </item>
+    
+    <item>
+      <title>Go并发tips</title>
+      <link>https://jy-sun-k.github.io/posts/go%E5%B9%B6%E5%8F%91tips/</link>
+      <pubDate>Tue, 25 May 2021 23:48:02 +0800</pubDate>
+      
+      <guid>https://jy-sun-k.github.io/posts/go%E5%B9%B6%E5%8F%91tips/</guid>
+      <description>Mutex 互斥锁是并发控制的一个基本手段，是为了避免竞争而建立的一种并发控制机制。 临界区就是一个被共享的资源，或者说是一个整体的一组共享资源 使用互斥锁，限定临界区只能同时由一个线程持有。 同步原语的适用场景： 共</description>
+    </item>
+    
+    <item>
+      <title>分布式缓存一</title>
+      <link>https://jy-sun-k.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F1/</link>
+      <pubDate>Tue, 25 May 2021 22:15:28 +0800</pubDate>
+      
+      <guid>https://jy-sun-k.github.io/posts/%E5%88%86%E5%B8%83%E5%BC%8F1/</guid>
+      <description>业务数据访问性能太低怎么办？ 缓存的定义 缓存最初的含义，是指用于加速 CPU 数据交换的 RAM，即随机存取存储器，通常这种存储器使用更昂贵但快速的静态 RAM（SRAM）技术，用以对 DRAM进 行加速。这是一个狭义</description>
+    </item>
+    
+  </channel>
+</rss>

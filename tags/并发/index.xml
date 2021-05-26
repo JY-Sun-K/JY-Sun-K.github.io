@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>并发 on pEnguin</title>
+    <link>https://jy-sun-k.github.io/tags/%E5%B9%B6%E5%8F%91/</link>
+    <description>Recent content in 并发 on pEnguin</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 25 May 2021 23:48:02 +0800</lastBuildDate>
+    
+	<atom:link href="https://jy-sun-k.github.io/tags/%E5%B9%B6%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go并发tips</title>
+      <link>https://jy-sun-k.github.io/posts/go%E5%B9%B6%E5%8F%91tips/</link>
+      <pubDate>Tue, 25 May 2021 23:48:02 +0800</pubDate>
+      
+      <guid>https://jy-sun-k.github.io/posts/go%E5%B9%B6%E5%8F%91tips/</guid>
+      <description>Mutex 互斥锁是并发控制的一个基本手段，是为了避免竞争而建立的一种并发控制机制。 临界区就是一个被共享的资源，或者说是一个整体的一组共享资源 使用互斥锁，限定临界区只能同时由一个线程持有。 同步原语的适用场景： 共</description>
+    </item>
+    
+  </channel>
+</rss>
