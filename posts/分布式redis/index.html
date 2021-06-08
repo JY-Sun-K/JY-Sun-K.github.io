@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="penguin" />
+	
+	
+	
+	<title>分布式缓存三 ｜ pEnguin</title>
+	
+    
+    
+    <meta name="description" content="Redis 基本原理 Redis 特性 Redis 性能很高，单线程压测可以达到 10~11w 的 QPS。 Redis 所有数据的读写操作，都在内存中进行，但也可以将所有数据进行落盘做持久化。Redis 提供了 2 种持久化方式。 快照方式，将某时刻所有数据都写入硬盘" />
+    
+
+    
+    
+    <meta name="keywords" content="Hugo, theme, zozo" />
+    
+
+	
+    
+    <link rel="shortcut icon" href="https://jy-sun-k.github.io/images/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="https://jy-sun-k.github.iocss/normalize.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://jy-sun-k.github.io/css/zozo.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://jy-sun-k.github.io/css/highlight.css" />
+
+    
+    
+</head>
+
+<body>
+    <div class="main animate__animated animate__fadeInDown">
+        <div class="nav_container animated fadeInDown">
+    <div class="site_nav" id="site_nav">
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/posts/">Archive</a>
+            </li>
+            
+            <li>
+                <a href="/tags/">Tags</a>
+            </li>
+            
+            <li>
+                <a href="/about/">About</a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="menu_icon">
+        <a id="menu_icon"><i class="ri-menu-line"></i></a>
+    </div>
+</div>
+        <div class="header animated fadeInDown">
+    <div class="site_title_container">
+        <div class="site_title">
+            <h1>
+                <a href="https://jy-sun-k.github.io">
+                    <span>pEnguin</span>
+                </a>
+            </h1>
+        </div>
+        <div class="description">
+            <p class="sub_title">💕💕💕💕</p>
+            <div class="my_socials">
+                
+                
+                <a href="https://github.com/JY-Sun-K" title="github" target="_blank"><i class="ri-github-fill"></i></a>
+                
+                
+                <a href="https://jy-sun-k.github.io/index.xml" type="application/rss+xml" title="rss" target="_blank"><i
+                        class="ri-rss-fill"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="content">
+            <div class="post_page">
+                <div class="post animate__animated animate__fadeInDown">
+                    <div class="post_title post_detail_title">
+                        <h2><a href='/posts/%E5%88%86%E5%B8%83%E5%BC%8Fredis/'>分布式缓存三</a></h2>
+                        <span class="date">2021.06.08</span>
+                    </div>
+                    <div class="post_content markdown"><h2 id="redis-基本原理">Redis 基本原理</h2>
+<h3 id="redis-特性">Redis 特性</h3>
+<ol>
+<li>
+<p>Redis 性能很高，单线程压测可以达到 10~11w 的 QPS。</p>
+</li>
+<li>
+<p>Redis 所有数据的读写操作，都在内存中进行，但也可以将所有数据进行落盘做持久化。Redis 提供了 2 种持久化方式。</p>
+<ul>
+<li>
+<p>快照方式，将某时刻所有数据都写入硬盘的 RDB 文件；</p>
+</li>
+<li>
+<p>追加文件方式，即将所有写命令都以追加的方式写入硬盘的 AOF 文件中。</p>
+<p>线上 Redis 一般会同时使用两种方式，通过开启 appendonly 及关联配置项，将写命令及时追加到 AOF 文件，同时在每日流量低峰时，通过 bgsave 保存当时所有内存数据快照。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Redis 的复制特性，让一个 Redis 实例作为 master，然后通过复制挂载多个不断同步更新的副本，即多个 slave。通过读写分离，把所有写操作落在 Redis 的 master，所有读操作随机落在 Redis 的多个 slave 中，从而大幅提升 Redis 的读写能力。</p>
+</li>
+<li>
+<p>Redis 还支持事务，在 multi 指令后，指定多个操作，然后通过 exec 指令一次性执行，中途如果出现异常，则不执行所有命令操作，否则，按顺序一次性执行所有操作，执行过程中不会执行任何其他指令。</p>
+</li>
+<li>
+<p>Redis 还支持 Cluster 特性，可以通过自动或手动方式，将所有 key 按哈希分散到不同节点，在容量不足时，还可以通过 Redis 的迁移指令，把其中一部分 key 迁移到其他节点。</p>
+</li>
+</ol>
+<p><img src="/images/CgotOV2lPF-AZ1LCAAEXirWDhew753.png" alt="img"></p>
+<ol start="6">
+<li>作为缓存组件，Redis 的最大优势是支持丰富的数据类型。目前，Redis 支持 8 种核心数据类型，包括 string、list、set、sorted set、hash、bitmap、geo、hyperloglog。</li>
+</ol>
+<p><strong>Redis 高性能</strong></p>
+<p>Redis 一般被看作单进程/单线程组件，因为 Redis 的网络 IO 和命令处理，都在核心进程中由单线程处理。Redis 基于 Epoll 事件模型开发，可以进行非阻塞网络 IO，同时由于单线程命令处理，整个处理过程不存在竞争，不需要加锁，没有上下文切换开销，所有数据操作都是在内存中操作，所以 Redis 的性能很高，单个实例即可以达到 10w 级的 QPS。核心线程除了负责网络 IO 及命令处理外，还负责写数据到缓冲，以方便将最新写操作同步到 AOF、slave。</p>
+<p>除了主进程，Redis 还会 fork 一个子进程，来进行重负荷任务的处理。Redis fork 子进程主要有 3 种场景。</p>
+<ol>
+<li>收到 bgrewriteaof 命令时，Redis 调用 fork，构建一个子进程，子进程往临时 AOF文件中，写入重建数据库状态的所有命令，当写入完毕，子进程则通知父进程，父进程把新增的写操作也追加到临时 AOF 文件，然后将临时文件替换老的 AOF 文件，并重命名。</li>
+<li>收到 bgsave 命令时，Redis 构建子进程，子进程将内存中的所有数据通过快照做一次持久化落地，写入到 RDB 中。</li>
+<li>当需要进行全量复制时，master 也会启动一个子进程，子进程将数据库快照保存到 RDB 文件，在写完 RDB 快照文件后，master 就会把 RDB 发给 slave，同时将后续新的写指令都同步给 slave。</li>
+</ol>
+<p><img src="/images/CgotOV2lPF-AZtVrAABZ5Cio_aE709.png" alt="img"></p>
+</div>
+                    <div class="post_footer">
+                        
+                        <div class="meta">
+                            <div class="info">
+                                <span class="field tags">
+                                    <i class="ri-stack-line"></i>
+                                    
+                                    <a href="https://jy-sun-k.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a>
+                                    
+                                    <a href="https://jy-sun-k.github.io/tags/go/">GO</a>
+                                    
+                                    <a href="https://jy-sun-k.github.io/tags/redis/">redis</a>
+                                    
+                                </span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                
+                <div class="doc_comments"></div>
+                
+            </div>
+        </div>
+    </div>
+    <a id="back_to_top" href="#" class="back_to_top"><i class="ri-arrow-up-s-line"></i></a>
+    <footer class="footer">
+    <div class="powered_by">
+        <a href="https://varkai.com">Designed by VarKai,</a>
+        <a href="http://www.gohugo.io/">Proudly published with Hugo</a>
+    </div>
+
+    <div class="footer_slogan">
+        <span>🔞🚫🔇🔕🚭🚷🚯🚳🚱📵</span>
+    </div>
+</footer>
+    <script src="https://jy-sun-k.github.io/js/jquery-3.5.1.min.js"></script>
+<link href="https://jy-sun-k.github.io/css/fancybox.min.css" rel="stylesheet">
+<script src="https://jy-sun-k.github.io/js/fancybox.min.js"></script>
+<script src="https://jy-sun-k.github.io/js/zozo.js"></script>
+
+
+<script type="text/javascript" async
+    src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\[\[', '\]\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                TeX: {
+                    equationNumbers: { autoNumber: "AMS" },
+                    extensions: ["AMSmath.js", "AMSsymbols.js"]
+                }
+            }
+        });
+
+        MathJax.Hub.Queue(function () {
+            
+            
+            
+            var all = MathJax.Hub.getAllJax(), i;
+            for (i = 0; i < all.length; i += 1) {
+                all[i].SourceElement().parentNode.className += ' has-jax';
+            }
+        });
+    </script>
+
+<style>
+    code.has-jax {
+        font: inherit;
+        font-size: 100%;
+        background: inherit;
+        border: inherit;
+        color: #515151;
+    }
+</style>
+
+
+
+</body>
+
+</html>

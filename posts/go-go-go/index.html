@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="penguin" />
+	
+	
+	
+	<title>Redis 一 ｜ pEnguin</title>
+	
+    
+    
+    <meta name="description" content="redis慢查询 生命周期 ps: 慢查询发生在第三阶段 客户端超时不一定慢查询，但慢查询是客户端超时的一个可能因素 slowlog-max-log 先进先出队列 固定长度 保存在内存内 slowlog-log-slower-than 慢查询阈值 单位微秒 slowlog-log-slower-th" />
+    
+
+    
+    
+    <meta name="keywords" content="Hugo, theme, zozo" />
+    
+
+	
+    
+    <link rel="shortcut icon" href="https://jy-sun-k.github.io/images/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="https://jy-sun-k.github.iocss/normalize.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://jy-sun-k.github.io/css/zozo.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://jy-sun-k.github.io/css/highlight.css" />
+
+    
+    
+</head>
+
+<body>
+    <div class="main animate__animated animate__fadeInDown">
+        <div class="nav_container animated fadeInDown">
+    <div class="site_nav" id="site_nav">
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/posts/">Archive</a>
+            </li>
+            
+            <li>
+                <a href="/tags/">Tags</a>
+            </li>
+            
+            <li>
+                <a href="/about/">About</a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="menu_icon">
+        <a id="menu_icon"><i class="ri-menu-line"></i></a>
+    </div>
+</div>
+        <div class="header animated fadeInDown">
+    <div class="site_title_container">
+        <div class="site_title">
+            <h1>
+                <a href="https://jy-sun-k.github.io">
+                    <span>pEnguin</span>
+                </a>
+            </h1>
+        </div>
+        <div class="description">
+            <p class="sub_title">💕💕💕💕</p>
+            <div class="my_socials">
+                
+                
+                <a href="https://github.com/JY-Sun-K" title="github" target="_blank"><i class="ri-github-fill"></i></a>
+                
+                
+                <a href="https://jy-sun-k.github.io/index.xml" type="application/rss+xml" title="rss" target="_blank"><i
+                        class="ri-rss-fill"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="content">
+            <div class="post_page">
+                <div class="post animate__animated animate__fadeInDown">
+                    <div class="post_title post_detail_title">
+                        <h2><a href='/posts/go-go-go/'>Redis 一</a></h2>
+                        <span class="date">2021.06.08</span>
+                    </div>
+                    <div class="post_content markdown"><h2 id="redis慢查询">redis慢查询</h2>
+<h4 id="生命周期">生命周期</h4>
+<p><img src="/images/image-20210604200811148.png" alt="image-20210604200811148"></p>
+<p>ps:</p>
+<ol>
+<li>慢查询发生在第三阶段</li>
+<li>客户端超时不一定慢查询，但慢查询是客户端超时的一个可能因素</li>
+</ol>
+<h4 id="slowlog-max-log">slowlog-max-log</h4>
+<ol>
+<li>先进先出队列</li>
+<li>固定长度</li>
+<li>保存在内存内</li>
+</ol>
+<p><img src="/images/image-20210604201230462.png" alt="image-20210604201230462"></p>
+<h4 id="slowlog-log-slower-than">slowlog-log-slower-than</h4>
+<ol>
+<li>慢查询阈值 单位微秒</li>
+<li>slowlog-log-slower-than=0,记录所有命令</li>
+<li>slowlog-log-slower-than&lt;0,不记录任何命令</li>
+</ol>
+<h4 id="配置方法">配置方法</h4>
+<p><img src="/images/image-20210604201543083.png" alt="image-20210604201543083"></p>
+<h4 id="慢查询命令">慢查询命令</h4>
+<p><img src="/images/image-20210604201653511.png" alt="image-20210604201653511"></p>
+<h4 id="运维经验">运维经验</h4>
+<p><img src="/images/image-20210604201910828.png" alt="image-20210604201910828"></p>
+<h2 id="redis-pipeline">redis pipeline</h2>
+<p><img src="/images/image-20210604202323621.png" alt="image-20210604202323621"></p>
+<p>ps:</p>
+<ol>
+<li>Redis的命令时间是微秒级别的</li>
+<li>pipeline每次条数要控制（网络）</li>
+</ol>
+<h4 id="使用建议">使用建议</h4>
+<ol>
+<li>注意每次pipeline携带数据量</li>
+<li>pipeline每次只能座用在一个reids节点上</li>
+<li>m操作与pipleine区别</li>
+</ol>
+<h4 id="redigo">redigo</h4>
+<p>Connections support pipelining using the Send, Flush and Receive methods.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">Send(commandName string, args ...interface{}) error
+Flush() error
+Receive() (reply interface{}, err error)
+</code></pre></div><p>Send writes the command to the connection&rsquo;s output buffer. Flush flushes the connection&rsquo;s output buffer to the server. Receive reads a single reply from the server. The following example shows a simple pipeline.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">c.Send(&#34;SET&#34;, &#34;foo&#34;, &#34;bar&#34;)
+c.Send(&#34;GET&#34;, &#34;foo&#34;)
+c.Flush()
+c.Receive() // reply from SET
+v, err = c.Receive() // reply from GET
+</code></pre></div><p>The Do method combines the functionality of the Send, Flush and Receive methods. The Do method starts by writing the command and flushing the output buffer. Next, the Do method receives all pending replies including the reply for the command just sent by Do. If any of the received replies is an error, then Do returns the error. If there are no errors, then Do returns the last reply. If the command argument to the Do method is &ldquo;&quot;, then the Do method will flush the output buffer and receive pending replies without sending a command.</p>
+<p>Use the Send and Do methods to implement pipelined transactions.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">c.Send(&#34;MULTI&#34;)
+c.Send(&#34;INCR&#34;, &#34;foo&#34;)
+c.Send(&#34;INCR&#34;, &#34;bar&#34;)
+r, err := c.Do(&#34;EXEC&#34;)
+fmt.Println(r) // prints [1, 1]
+</code></pre></div><h4 id="concurrency">Concurrency</h4>
+<p>Connections support one concurrent caller to the Receive method and one concurrent caller to the Send and Flush methods. No other concurrency is supported including concurrent calls to the Do and Close methods.</p>
+<p>For full concurrent access to Redis, use the thread-safe Pool to get, use and release a connection from within a goroutine. Connections returned from a Pool have the concurrency restrictions described in the previous paragraph.</p>
+<h2 id="bitmap">bitmap</h2>
+<p><img src="/images/image-20210604205109247.png" alt="image-20210604205109247"></p>
+<h2 id="hyperloglog">hyperloglog</h2>
+<h2 id="geo">geo</h2>
+<h2 id="持久化">持久化</h2>
+<h4 id="rdb">RDB</h4>
+<ol>
+<li>
+<p>save</p>
+<p>当执行save命令时，由于save是同步的，那么当数据量较大时，在进行RDB拷贝创建时redis会阻塞</p>
+<p><img src="/images/image-20210606162235874.png" alt="image-20210606162235874"></p>
+</li>
+<li>
+<p>bgsave</p>
+<p>异步，阻塞发生在fork（）</p>
+<p><img src="/images/image-20210606162401267.png" alt="image-20210606162401267"></p>
+</li>
+<li>
+<p>自动</p>
+<p><img src="/images/image-20210606185347633.png" alt="image-20210606185347633"></p>
+</li>
+</ol>
+<p><img src="/images/image-20210606203624317.png" alt="image-20210606203624317"></p>
+<h4 id="aof">AOF</h4>
+<p><img src="/images/image-20210606203939260.png" alt="image-20210606203939260"></p>
+<p>三种策略</p>
+<p><img src="/images/image-20210606204222837.png" alt="image-20210606204222837"></p>
+<p>AOF 重写的作用</p>
+<ol>
+<li>减少硬盘占用量</li>
+<li>加速恢复速度</li>
+</ol>
+<p>AOF实现的两种方式</p>
+<ol>
+<li>
+<p>bgrewriteaof</p>
+<p><img src="/images/image-20210606204708550.png" alt="image-20210606204708550"></p>
+</li>
+<li>
+<p>AOF重写配置</p>
+</li>
+</ol>
+<p>AOF配置</p>
+<p><img src="/images/image-20210606205146398.png" alt="image-20210606205146398"></p>
+</div>
+                    <div class="post_footer">
+                        
+                        <div class="meta">
+                            <div class="info">
+                                <span class="field tags">
+                                    <i class="ri-stack-line"></i>
+                                    
+                                    <a href="https://jy-sun-k.github.io/tags/redis/">redis</a>
+                                    
+                                </span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                
+                <div class="doc_comments"></div>
+                
+            </div>
+        </div>
+    </div>
+    <a id="back_to_top" href="#" class="back_to_top"><i class="ri-arrow-up-s-line"></i></a>
+    <footer class="footer">
+    <div class="powered_by">
+        <a href="https://varkai.com">Designed by VarKai,</a>
+        <a href="http://www.gohugo.io/">Proudly published with Hugo</a>
+    </div>
+
+    <div class="footer_slogan">
+        <span>🔞🚫🔇🔕🚭🚷🚯🚳🚱📵</span>
+    </div>
+</footer>
+    <script src="https://jy-sun-k.github.io/js/jquery-3.5.1.min.js"></script>
+<link href="https://jy-sun-k.github.io/css/fancybox.min.css" rel="stylesheet">
+<script src="https://jy-sun-k.github.io/js/fancybox.min.js"></script>
+<script src="https://jy-sun-k.github.io/js/zozo.js"></script>
+
+
+<script type="text/javascript" async
+    src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\[\[', '\]\]']],
+                processEscapes: true,
+                processEnvironments: true,
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                TeX: {
+                    equationNumbers: { autoNumber: "AMS" },
+                    extensions: ["AMSmath.js", "AMSsymbols.js"]
+                }
+            }
+        });
+
+        MathJax.Hub.Queue(function () {
+            
+            
+            
+            var all = MathJax.Hub.getAllJax(), i;
+            for (i = 0; i < all.length; i += 1) {
+                all[i].SourceElement().parentNode.className += ' has-jax';
+            }
+        });
+    </script>
+
+<style>
+    code.has-jax {
+        font: inherit;
+        font-size: 100%;
+        background: inherit;
+        border: inherit;
+        color: #515151;
+    }
+</style>
+
+
+
+</body>
+
+</html>
